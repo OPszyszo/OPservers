@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Opszyszo · Serwery Discord</title>
+  <style>
+    /* ── Reszta stylów identyczna jak w poprzedniej wersji (ciemny neon) ── */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0b0a0f;
+      color: #eaeaea;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px 40px;
+      background-image: radial-gradient(circle at 20% 30%, #1a1030 0%, #0b0a0f 70%);
+    }
+    .container { max-width:1200px; width:100%; }
+    .navbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 24px 0 16px;
+      border-bottom: 1px solid rgba(150,80,255,0.2);
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap:16px;
+    }
+    .logo {
+      font-size:1.6rem; font-weight:700;
+      background: linear-gradient(135deg,#b47aff,#6f3bff);
+      -webkit-background-clip:text; background-clip:text;
+      color:transparent;
+      text-shadow:0 0 20px rgba(111,59,255,0.3);
+    }
+    .logo span { font-weight:300; color:#a0a0b0; background:none; -webkit-background-clip:unset; background-clip:unset; text-shadow:none; }
+    .nav-links { display:flex; gap:28px; align-items:center; }
+    .nav-links a { color:#bbb; text-decoration:none; font-weight:500; transition:0.25s; }
+    .nav-links a:hover { color:#c8a7ff; text-shadow:0 0 12px rgba(170,100,255,0.5); }
+    .nav-links .btn-outline {
+      border:1px solid #7a4bff; padding:8px 22px; border-radius:40px;
+      background:rgba(122,75,255,0.07); color:#c8a7ff; font-weight:600;
+      transition:0.25s;
+    }
+    .nav-links .btn-outline:hover { background:#7a4bff; color:#fff; box-shadow:0 0 28px rgba(122,75,255,0.5); }
+
+    .hero { text-align:center; padding:36px 0 28px; }
+    .hero h1 {
+      font-size:3.2rem; font-weight:800;
+      background:linear-gradient(to right,#f0e6ff,#b78aff,#7a4bff);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow:0 0 50px rgba(122,75,255,0.2);
+    }
+    .hero p { font-size:1.2rem; color:#b0aac0; margin-top:12px; max-width:620px; margin-inline:auto; font-weight:300; }
+    .hero .highlight { color:#d4baff; font-weight:500; }
+
+    .offers { display:flex; flex-wrap:wrap; justify-content:center; gap:28px; margin:40px 0 36px; }
+    .card {
+      background:rgba(18,16,30,0.7); backdrop-filter:blur(6px);
+      border:1px solid rgba(130,80,255,0.2); border-radius:32px;
+      padding:32px 28px 28px;
+      flex:1 1 280px; max-width:340px;
+      transition:0.3s ease; box-shadow:0 8px 40px rgba(0,0,0,0.6);
+      position:relative; overflow:hidden;
+    }
+    .card:hover { transform:translateY(-8px); border-color:#9a6aff; box-shadow:0 12px 60px rgba(122,75,255,0.2); }
+    .card::before {
+      content:''; position:absolute; top:-2px;left:-2px;right:-2px;bottom:-2px;
+      border-radius:32px;
+      background:linear-gradient(135deg,rgba(122,75,255,0.1),transparent 60%);
+      z-index:-1; filter:blur(12px);
+    }
+    .card .badge {
+      display:inline-block; background:rgba(122,75,255,0.2); color:#c8a7ff;
+      font-size:0.7rem; font-weight:700; text-transform:uppercase;
+      padding:4px 14px; border-radius:40px; border:1px solid rgba(122,75,255,0.25);
+      margin-bottom:14px;
+    }
+    .card .badge.best { background:#7a4bff; color:#fff; border-color:#7a4bff; box-shadow:0 0 24px rgba(122,75,255,0.4); }
+    .card h3 { font-size:1.8rem; font-weight:700; margin-bottom:6px; }
+    .card .sub { color:#8f89a0; font-size:0.85rem; margin-bottom:14px; }
+
+    .price-area { display:flex; align-items:baseline; gap:12px; margin:12px 0 18px; flex-wrap:wrap; }
+    .price-current { font-size:2.2rem; font-weight:700; color:#f0eaff; }
+    .price-current .currency { font-size:1.2rem; font-weight:400; color:#b0aac0; }
+    .price-old { font-size:1.1rem; color:#7a7488; text-decoration:line-through; }
+    .price-discount { font-size:0.8rem; background:rgba(255,80,80,0.15); color:#ff7a7a; padding:2px 12px; border-radius:30px; border:1px solid rgba(255,80,80,0.2); }
+
+    .features { list-style:none; margin:18px 0 24px; font-size:0.95rem; line-height:1.8; }
+    .features li { display:flex; align-items:center; gap:10px; padding:4px 0; }
+    .features li::before { content:"✦"; color:#7a4bff; font-size:0.8rem; }
+
+    .btn-primary {
+      display:inline-block; width:100%; text-align:center;
+      background:linear-gradient(135deg,#6f3bff,#934bff);
+      border:none; border-radius:60px; padding:14px 0;
+      font-weight:700; font-size:1rem; color:#fff;
+      cursor:pointer; transition:0.25s;
+      box-shadow:0 4px 24px rgba(111,59,255,0.3);
+      text-decoration:none;
+    }
+    .btn-primary:hover { transform:scale(1.02); box-shadow:0 6px 36px rgba(111,59,255,0.5); }
+
+    /* KOD RABATOWY */
+    .discount-section {
+      background:rgba(18,16,30,0.5); backdrop-filter:blur(4px);
+      border-radius:60px; padding:20px 30px;
+      display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+      gap:14px 20px; border:1px solid rgba(130,80,255,0.15);
+      margin:20px auto 40px; max-width:600px;
+    }
+    .discount-section label { font-weight:500; color:#c0b8d0; display:flex; align-items:center; gap:8px; }
+    .discount-section input {
+      background:#12101e; border:1px solid #3a2e5a; border-radius:40px;
+      padding:12px 22px; color:#eaeaea; font-size:0.95rem;
+      flex:1 1 160px; outline:none; text-transform:uppercase;
+    }
+    .discount-section input:focus { border-color:#7a4bff; box-shadow:0 0 24px rgba(122,75,255,0.2); }
+    .discount-section button {
+      background:#7a4bff; border:none; border-radius:40px;
+      padding:12px 28px; font-weight:700; color:#fff;
+      cursor:pointer; transition:0.25s; font-size:0.95rem;
+      box-shadow:0 4px 20px rgba(122,75,255,0.3);
+    }
+    .discount-section button:hover { background:#934bff; transform:scale(1.02); }
+    .discount-msg { width:100%; text-align:center; font-size:0.9rem; color:#b0aac0; min-height:1.6em; }
+    .discount-msg.success { color:#90ee90; }
+    .discount-msg.error { color:#ff7a7a; }
+
+    .footer { margin-top:40px; font-size:0.8rem; color:#4a4460; text-align:center; border-top:1px solid #1a1628; padding-top:28px; }
+    @media (max-width:640px) {
+      .hero h1 { font-size:2.2rem; }
+      .card { flex:1 1 100%; max-width:400px; }
+      .navbar { flex-direction:column; align-items:center; }
+      .nav-links { gap:16px; flex-wrap:wrap; justify-content:center; }
+      .discount-section { padding:18px 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <nav class="navbar">
+    <div class="logo">opszyszo <span>· serwery</span></div>
+    <div class="nav-links">
+      <a href="#">Start</a>
+      <a href="#" class="btn-outline">Oferta</a>
+      <a href="#">Kontakt</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>ŚWIETNE SERWERY <br>JUŻ OD 0,00<span style="font-weight:300;">zł</span></h1>
+    <p><span class="highlight">Profesjonalne serwery Discord</span> z pełnym wyposażeniem, botami, zabezpieczeniami i unikalnym stylem. Wybierz pakiet idealny dla siebie.</p>
+  </section>
+
+  <div class="offers" id="offersContainer"></div>
+
+  <!-- KOD RABATOWY -->
+  <div class="discount-section">
+    <label><span>🎟️</span> Kod rabatowy</label>
+    <input type="text" id="discountInput" placeholder="wpisz kod" maxlength="30" autocomplete="off">
+    <button id="applyDiscountBtn">Aktywuj</button>
+    <div id="discountMessage" class="discount-msg"></div>
+  </div>
+
+  <footer class="footer">© 2026 opszyszo · wszystkie prawa zastrzeżone</footer>
+</div>
+
+<script>
+  (function() {
+    // ─── OFERTY ───
+    const offersData = [
+      {
+        id: 'basic',
+        name: 'Basic',
+        badge: '',
+        price: 0.00,
+        oldPrice: 0.99,
+        features: [
+          '5 Szablonów do wyboru',
+          'Wszystkie kategorie',
+          'Dostęp do serwera w 95%',
+          'Max czas oczekiwania: 1-2 Miesiące',
+          'Boty, Role, Wprowadzenie',
+          'Budowniczy serwa musi mieć rolę <strong>helper</strong> lub <strong>server builder</strong>'
+        ]
+      },
+      {
+        id: 'classic',
+        name: 'Classic',
+        badge: 'best',
+        price: 2.99,
+        oldPrice: 2.99,
+        features: [
+          '15 Szablonów',
+          'Wszystkie kategorie',
+          'Dostęp do serwera w 99%',
+          'Boty, Role, Zabezpieczenia, Wprowadzenie',
+          '✅ Emotki i naklejki',
+          '🤖 Wszystkie ustawienia botów są już skonfigurowane',
+          'Budowniczy serwa: <strong>helper</strong> / <strong>server builder</strong>',
+          'Opcjonalnie: reklama za stworzenie serwera',
+          'Stworzenie tylko opisu'
+        ]
+      },
+      {
+        id: 'pro',
+        name: 'Pro',
+        badge: '',
+        price: 4.99,
+        oldPrice: 4.99,
+        features: [
+          '30 Szablonów (+ będzie więcej)',
+          'Wszystkie kategorie',
+          'Dostęp do serwera w 100%',
+          'Boty, Role, Zabezpieczenia, Wprowadzenie',
+          '✅ Emotki i naklejki',
+          '🤖 Wszystkie ustawienia botów są już skonfigurowane',
+          'Brak wymaganej roli (opcjonalnie reklama usługi)',
+          'Własne życzenia',
+          'Stworzenie ikony i opisu <strong>(bez AI)</strong>'
+        ]
+      }
+    ];
+
+    // ─── KODY RABATOWE (aktywne / nieaktywne) ───
+    // Zmieniaj tutaj active: true/false oraz dodawaj nowe kody
+    let discountCodes = [
+      { code: 'SUMMER2026', discount: 50, active: true }
+      // możesz dopisać kolejne, np. { code: 'WINTER2026', discount: 30, active: false }
+    ];
+
+    // ─── REFERENCJE ───
+    const container = document.getElementById('offersContainer');
+    const discountInput = document.getElementById('discountInput');
+    const applyBtn = document.getElementById('applyDiscountBtn');
+    const discountMsg = document.getElementById('discountMessage');
+
+    let activeDiscount = null; // aktualnie użyty kod
+
+    function formatPrice(val) {
+      return val.toFixed(2).replace('.', ',') + ' zł';
+    }
+
+    function renderOffers() {
+      let html = '';
+      offersData.forEach(offer => {
+        const isFree = offer.price === 0 && offer.oldPrice > 0;
+        let currentPrice = offer.price;
+        let oldPrice = offer.oldPrice;
+        let discountPercent = 0;
+
+        if (activeDiscount && activeDiscount.active && currentPrice > 0) {
+          const disc = activeDiscount.discount;
+          currentPrice = Math.round(currentPrice * (1 - disc / 100) * 100) / 100;
+          discountPercent = disc;
+        }
+
+        const showOldPrice = (oldPrice > 0 && (oldPrice !== currentPrice || isFree));
+
+        let badgeHtml = '';
+        if (offer.badge === 'best') {
+          badgeHtml = `<span class="badge best">⭐ best</span>`;
+        } else if (isFree) {
+          badgeHtml = `<span class="badge">🔥 promocja</span>`;
+        } else {
+          badgeHtml = `<span class="badge">${offer.name}</span>`;
+        }
+
+        let discountTag = '';
+        if (discountPercent > 0 && currentPrice > 0) {
+          discountTag = `<span class="price-discount">-${discountPercent}%</span>`;
+        }
+
+        const featuresHtml = offer.features.map(f => `<li>${f}</li>`).join('');
+
+        html += `
+          <div class="card">
+            ${badgeHtml}
+            <h3>${offer.name}</h3>
+            <div class="price-area">
+              <span class="price-current">${formatPrice(currentPrice)}</span>
+              ${showOldPrice ? `<span class="price-old">${formatPrice(oldPrice)}</span>` : ''}
+              ${discountTag}
+            </div>
+            <ul class="features">${featuresHtml}</ul>
+            <a href="check.html?offer=${offer.id}" class="btn-primary">Wybierz ${offer.name}</a>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    function applyDiscount(code) {
+      const trimmed = code.trim().toUpperCase();
+      if (!trimmed) {
+        activeDiscount = null;
+        discountMsg.textContent = 'Usunięto kod.';
+        discountMsg.className = 'discount-msg';
+        renderOffers();
+        return;
+      }
+      const found = discountCodes.find(c => c.code === trimmed);
+      if (!found) {
+        activeDiscount = null;
+        discountMsg.textContent = '❌ Nieprawidłowy kod.';
+        discountMsg.className = 'discount-msg error';
+        renderOffers();
+        return;
+      }
+      if (!found.active) {
+        activeDiscount = null;
+        discountMsg.textContent = '❌ Ten kod jest nieaktywny.';
+        discountMsg.className = 'discount-msg error';
+        renderOffers();
+        return;
+      }
+      activeDiscount = { ...found };
+      discountMsg.textContent = `✅ Kod "${found.code}" zastosowany (${found.discount}% zniżki)`;
+      discountMsg.className = 'discount-msg success';
+      renderOffers();
+    }
+
+    applyBtn.addEventListener('click', () => applyDiscount(discountInput.value));
+    discountInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') applyBtn.click(); });
+
+    renderOffers();
+  })();
+</script>
+</body>
+</html>
