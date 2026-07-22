@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>OPserwery· Serwery Discord</title>
+  <title>Opszyszo · Serwery Discord</title>
   <style>
+    /* ─── OGÓLNE ─── */
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
@@ -19,7 +20,7 @@
     }
     .container { max-width:1200px; width:100%; }
 
-    /* NAVBAR */
+    /* ─── NAVBAR ─── */
     .navbar {
       display: flex; justify-content: space-between; align-items: center;
       padding: 24px 0 16px;
@@ -46,7 +47,7 @@
     }
     .nav-links .btn-outline:hover { background:#7a4bff; color:#fff; box-shadow:0 0 28px rgba(122,75,255,0.5); }
 
-    /* HERO */
+    /* ─── HERO ─── */
     .hero { text-align:center; padding:36px 0 28px; }
     .hero h1 {
       font-size:3.2rem; font-weight:800;
@@ -57,13 +58,13 @@
     .hero p { font-size:1.2rem; color:#b0aac0; margin-top:12px; max-width:620px; margin-inline:auto; font-weight:300; }
     .hero .highlight { color:#d4baff; font-weight:500; }
 
-    /* OPINIE – automatyczne przewijanie */
+    /* ─── OPINIE (automatyczne przesuwanie) ─── */
     .opinions-section {
       margin: 20px 0 40px;
       padding: 10px 0;
       border-top: 1px solid rgba(130,80,255,0.15);
       border-bottom: 1px solid rgba(130,80,255,0.15);
-      overflow: hidden; /* ukrywa nadmiar */
+      overflow: hidden; /* ukrywa to, co wychodzi poza kontener */
       position: relative;
     }
     .opinions-section h2 {
@@ -74,28 +75,20 @@
       margin-bottom: 16px;
       letter-spacing: 2px;
     }
+    .opinions-track-wrapper {
+      overflow: hidden;
+      width: 100%;
+    }
     .opinions-track {
       display: flex;
       gap: 24px;
       width: max-content;
-      animation: scrollOpinions 30s linear infinite;
+      animation: scrollOpinions 20s linear infinite;
+      padding: 8px 0 16px 0;
     }
-    /* podwajamy zawartość, aby uzyskać płynne przewijanie bez przerwy */
-    .opinions-track-duplicate {
-      display: flex;
-      gap: 24px;
-    }
-
-    @keyframes scrollOpinions {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* Kiedy użytkownik najedzie kursorem – zatrzymaj animację (opcjonalnie) */
-    .opinions-section:hover .opinions-track {
+    .opinions-track:hover {
       animation-play-state: paused;
     }
-
     .opinion-card {
       flex: 0 0 260px;
       background: rgba(18,16,30,0.6);
@@ -144,7 +137,12 @@
       margin-left: 2px;
     }
 
-    /* OFERTY */
+    @keyframes scrollOpinions {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ─── OFERTY ─── */
     .offers { display:flex; flex-wrap:wrap; justify-content:center; gap:28px; margin:40px 0 36px; }
     .card {
       background:rgba(18,16,30,0.7); backdrop-filter:blur(6px);
@@ -192,7 +190,7 @@
     }
     .btn-primary:hover { transform:scale(1.02); box-shadow:0 6px 36px rgba(111,59,255,0.5); }
 
-    /* KOD RABATOWY */
+    /* ─── KOD RABATOWY ─── */
     .discount-section {
       background:rgba(18,16,30,0.5); backdrop-filter:blur(4px);
       border-radius:60px; padding:20px 30px;
@@ -234,7 +232,7 @@
 <div class="container">
   <!-- NAVBAR -->
   <nav class="navbar">
-    <div class="logo">OPserwery <span>· serwery</span></div>
+    <div class="logo">opszyszo <span>· serwery</span></div>
     <div class="nav-links">
       <a href="#">Start</a>
       <a href="#" class="btn-outline">Oferta</a>
@@ -248,13 +246,12 @@
     <p><span class="highlight">Profesjonalne serwery Discord</span> z pełnym wyposażeniem, botami, zabezpieczeniami i unikalnym stylem. Wybierz pakiet idealny dla siebie.</p>
   </section>
 
-  <!-- OPINIE – automatycznie przesuwane -->
+  <!-- OPINIE – automatyczne przesuwanie -->
   <section class="opinions-section">
     <h2>⭐ Co mówią nasi klienci</h2>
-    <div class="opinions-track">
-      <!-- Podwajamy zawartość, aby uzyskać płynny nieskończony scroll -->
-      <div class="opinions-track-duplicate">
-        <!-- 10 opinii – do zmiany w kodzie -->
+    <div class="opinions-track-wrapper">
+      <div class="opinions-track">
+        <!-- 10 opinii (pustych) – dla płynnego scrollowania duplikujemy je -->
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
@@ -265,9 +262,7 @@
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-      </div>
-      <!-- Kopia dla płynności -->
-      <div class="opinions-track-duplicate">
+        <!-- DUPLIKAT dla płynnego scrollowania (potrzebne, aby animacja była ciągła) -->
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
@@ -282,7 +277,7 @@
     </div>
   </section>
 
-  <!-- OFERTY -->
+  <!-- OFERTY (generowane przez JS) -->
   <div class="offers" id="offersContainer"></div>
 
   <!-- KOD RABATOWY -->
@@ -293,12 +288,12 @@
     <div id="discountMessage" class="discount-msg"></div>
   </div>
 
-  <footer class="footer">© 2026 opserwery · wszystkie prawa zastrzeżone</footer>
+  <footer class="footer">© 2026 opszyszo · wszystkie prawa zastrzeżone</footer>
 </div>
 
 <script>
   (function() {
-    // OFERTY (bez zmian)
+    // ─── OFERTY ───
     const offersData = [
       {
         id: 'basic',
@@ -348,15 +343,16 @@
           '🤖 Wszystkie ustawienia botów są już skonfigurowane',
           'Brak wymaganej roli (opcjonalnie reklama usługi)',
           'Własne życzenia',
-          'Stworzenie ikony i opisu <strong>(bez AI)</strong>'
-          'Miesięczny backup serwera bez botow <strong>(BETA)</strong>'
+          'Stworzenie ikony i opisu <strong>(bez AI)</strong>',
+          '📅 Co miesięczny backup serwera (bez botów) — BETA'
         ]
       }
     ];
 
+    // ─── KODY RABATOWE (aktywne/nieaktywne) ───
     let discountCodes = [
       { code: 'SUMMER2026', discount: 50, active: true }
-      { code: 'serverscooked', discount: 10, active: true }
+      // dopisz kolejne kody tutaj, ustawiając active: true/false
     ];
 
     const container = document.getElementById('offersContainer');
