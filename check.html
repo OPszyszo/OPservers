@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Podsumowanie · Opszyszo</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0b0a0f;
+      color: #eaeaea;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background-image: radial-gradient(circle at 20% 30%, #1a1030 0%, #0b0a0f 70%);
+    }
+    .check-card {
+      background: rgba(18,16,30,0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(130,80,255,0.25);
+      border-radius: 48px;
+      padding: 40px 48px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.7);
+      text-align: center;
+    }
+    .check-card h2 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #b47aff, #6f3bff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .check-card .sub {
+      color: #8f89a0;
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .detail {
+      background: rgba(255,255,255,0.04);
+      border-radius: 24px;
+      padding: 20px;
+      margin: 16px 0;
+      text-align: left;
+    }
+    .detail .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .detail .row:last-child { border-bottom: none; }
+    .detail .label { color: #b0aac0; }
+    .detail .value { font-weight: 600; color: #f0eaff; }
+
+    .features-list {
+      list-style: none;
+      text-align: left;
+      margin: 12px 0 20px;
+      padding: 0 8px;
+    }
+    .features-list li {
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .features-list li::before {
+      content: "✦";
+      color: #7a4bff;
+    }
+
+    .btn-buy {
+      width: 100%;
+      background: linear-gradient(135deg, #6f3bff, #934bff);
+      border: none;
+      border-radius: 60px;
+      padding: 16px 0;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.25s;
+      box-shadow: 0 4px 30px rgba(111,59,255,0.4);
+      margin-top: 10px;
+    }
+    .btn-buy:hover { transform: scale(1.02); box-shadow: 0 6px 40px rgba(111,59,255,0.6); }
+    .btn-buy:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .result-box {
+      margin-top: 28px;
+      padding: 20px;
+      background: rgba(122,75,255,0.08);
+      border-radius: 24px;
+      border: 1px dashed rgba(122,75,255,0.3);
+    }
+    .result-box .pv-label {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #d4baff;
+      letter-spacing: 1px;
+    }
+    .result-box .code {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #b47aff, #6f3bff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-top: 8px;
+      word-break: break-all;
+    }
+    .result-box .info {
+      font-size: 0.8rem;
+      color: #7a7488;
+      margin-top: 12px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 24px;
+      color: #7a7488;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+    .back-link:hover { color: #c8a7ff; }
+
+    @media (max-width: 500px) {
+      .check-card { padding: 28px 20px; }
+      .check-card h2 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="check-card" id="checkCard">
+  <h2>🛒 Podsumowanie</h2>
+  <p class="sub">Wybrałeś pakiet:</p>
+
+  <div id="offerDetails" class="detail">
+    <!-- wypełniane z JS -->
+  </div>
+
+  <button id="buyBtn" class="btn-buy">Kup teraz</button>
+
+  <div id="resultArea" class="result-box" style="display:none;">
+    <div class="pv-label">__opservers__</div>
+    <div class="code" id="generatedCode"></div>
+    <div class="info">Twój kod został wygenerowany</div>
+  </div>
+
+  <a href="index.html" class="back-link">← Wróć do ofert</a>
+</div>
+
+<script>
+  (function() {
+    // ─── DANE OFERT ───
+    const offersData = [
+      {
+        id: 'basic',
+        name: 'Basic',
+        price: 0.00,
+        oldPrice: 0.99,
+        features: [
+          '5 Szablonów do wyboru',
+          'Wszystkie kategorie',
+          'Dostęp do serwera w 95%',
+          'Max czas oczekiwania: 1-2 Miesiące',
+          'Boty, Role, Wprowadzenie',
+          'Budowniczy serwa musi mieć rolę helper lub server builder'
+        ]
+      },
+      {
+        id: 'classic',
+        name: 'Classic',
+        price: 2.99,
+        oldPrice: 2.99,
+        features: [
+          '15 Szablonów',
+          'Wszystkie kategorie',
+          'Dostęp do serwera w 99%',
+          'Boty, Role, Zabezpieczenia, Wprowadzenie',
+          '✅ Emotki i naklejki',
+          '🤖 Wszystkie ustawienia botów są już skonfigurowane',
+          'Budowniczy serwa: helper / server builder',
+          'Opcjonalnie: reklama za stworzenie serwera',
+          'Stworzenie tylko opisu'
+        ]
+      },
+      {
+        id: 'pro',
+        name: 'Pro',
+        price: 4.99,
+        oldPrice: 4.99,
+        features: [
+          '30 Szablonów (+ będzie więcej)',
+          'Wszystkie kategorie',
+          'Dostęp do serwera w 100%',
+          'Boty, Role, Zabezpieczenia, Wprowadzenie',
+          '✅ Emotki i naklejki',
+          '🤖 Wszystkie ustawienia botów są już skonfigurowane',
+          'Brak wymaganej roli (opcjonalnie reklama usługi)',
+          'Własne życzenia',
+          'Stworzenie ikony i opisu (bez AI)'
+        ]
+      }
+    ];
+
+    const params = new URLSearchParams(window.location.search);
+    const offerId = params.get('offer') || 'basic';
+    const offer = offersData.find(o => o.id === offerId) || offersData[0];
+
+    const detailsDiv = document.getElementById('offerDetails');
+    const featuresHtml = offer.features.map(f => `<li>${f}</li>`).join('');
+    const priceStr = offer.price.toFixed(2).replace('.', ',') + ' zł';
+    detailsDiv.innerHTML = `
+      <div class="row"><span class="label">Pakiet</span><span class="value">${offer.name}</span></div>
+      <div class="row"><span class="label">Cena</span><span class="value">${priceStr}</span></div>
+      <div style="margin-top: 12px;"><strong>Co zawiera:</strong></div>
+      <ul class="features-list">${featuresHtml}</ul>
+    `;
+
+    const buyBtn = document.getElementById('buyBtn');
+    const resultArea = document.getElementById('resultArea');
+    const generatedCodeSpan = document.getElementById('generatedCode');
+
+    buyBtn.addEventListener('click', function() {
+      buyBtn.disabled = true;
+      buyBtn.textContent = '⏳ Przetwarzanie...';
+
+      // Generuj losowy kod (10 znaków)
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let code = '';
+      for (let i = 0; i < 10; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+
+      // Wyświetl kod na stronie
+      resultArea.style.display = 'block';
+      generatedCodeSpan.textContent = code;
+
+      // Wyślij e-mail przez FormSubmit (w tle)
+      sendEmail(code, offer);
+
+      buyBtn.textContent = '✅ Zakupiono';
+      // pozostaje disabled, aby nie wysyłać ponownie
+    });
+
+    // ─── WYSYŁKA PRZEZ FORMSUBMIT (bez rejestracji) ───
+    function sendEmail(code, offer) {
+      const email = 'nakl3jka@outlook.com';
+      const subject = `Nowe zamówienie - ${offer.name}`;
+      const message = `
+        Wybrano pakiet: ${offer.name}
+        Cena: ${offer.price.toFixed(2)} zł
+        Wygenerowany kod: ${code}
+        ---
+        Opszyszo
+      `;
+
+      // FormSubmit akceptuje POST na https://formsubmit.co/ajax/email
+      fetch('https://formsubmit.co/ajax/' + email, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          subject: subject,
+          message: message
+        })
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Błąd wysyłki');
+        console.log('E-mail wysłany poprawnie');
+      })
+      .catch(error => {
+        console.error('Błąd przy wysyłce e-mail:', error);
+        // Błąd nie jest pokazywany użytkownikowi – zgodnie z wymaganiem
+      });
+    }
+
+  })();
+</script>
+</body>
+</html>
