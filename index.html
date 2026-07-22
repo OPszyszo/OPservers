@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Opszyszo · Serwery Discord</title>
+  <title>OPservers · Serwery Discord</title>
   <style>
     /* ─── OGÓLNE ─── */
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -58,13 +58,13 @@
     .hero p { font-size:1.2rem; color:#b0aac0; margin-top:12px; max-width:620px; margin-inline:auto; font-weight:300; }
     .hero .highlight { color:#d4baff; font-weight:500; }
 
-    /* ─── OPINIE (automatyczne przesuwanie) ─── */
+    /* ─── OPINIE – automatyczne przewijanie ─── */
     .opinions-section {
       margin: 20px 0 40px;
       padding: 10px 0;
       border-top: 1px solid rgba(130,80,255,0.15);
       border-bottom: 1px solid rgba(130,80,255,0.15);
-      overflow: hidden; /* ukrywa to, co wychodzi poza kontener */
+      overflow: hidden;
       position: relative;
     }
     .opinions-section h2 {
@@ -78,16 +78,21 @@
     .opinions-track-wrapper {
       overflow: hidden;
       width: 100%;
+      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     }
     .opinions-track {
       display: flex;
       gap: 24px;
       width: max-content;
-      animation: scrollOpinions 20s linear infinite;
-      padding: 8px 0 16px 0;
+      animation: scrollOpinions 30s linear infinite;
     }
     .opinions-track:hover {
       animation-play-state: paused;
+    }
+    @keyframes scrollOpinions {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); } /* przesuwamy o połowę szerokości, bo mamy duplikaty */
     }
     .opinion-card {
       flex: 0 0 260px;
@@ -101,7 +106,7 @@
     }
     .opinion-card:hover {
       border-color: #9a6aff;
-      transform: translateY(-4px);
+      transform: scale(1.02);
       box-shadow: 0 8px 30px rgba(122,75,255,0.15);
     }
     .opinion-user {
@@ -135,11 +140,6 @@
       font-size: 1.6rem;
       line-height: 0.8;
       margin-left: 2px;
-    }
-
-    @keyframes scrollOpinions {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
     }
 
     /* ─── OFERTY ─── */
@@ -232,7 +232,7 @@
 <div class="container">
   <!-- NAVBAR -->
   <nav class="navbar">
-    <div class="logo">opszyszo <span>· serwery</span></div>
+    <div class="logo">OPservers <span>· serwery</span></div>
     <div class="nav-links">
       <a href="#">Start</a>
       <a href="#" class="btn-outline">Oferta</a>
@@ -246,12 +246,13 @@
     <p><span class="highlight">Profesjonalne serwery Discord</span> z pełnym wyposażeniem, botami, zabezpieczeniami i unikalnym stylem. Wybierz pakiet idealny dla siebie.</p>
   </section>
 
-  <!-- OPINIE – automatyczne przesuwanie -->
+  <!-- OPINIE – automatyczne przewijanie (duplikaty dla płynności) -->
   <section class="opinions-section">
     <h2>⭐ Co mówią nasi klienci</h2>
     <div class="opinions-track-wrapper">
-      <div class="opinions-track">
-        <!-- 10 opinii (pustych) – dla płynnego scrollowania duplikujemy je -->
+      <div class="opinions-track" id="opinionsTrack">
+        <!-- Karty opinii – każda powtórzona dwukrotnie, aby uzyskać ciągły efekt -->
+        <!-- Zestaw 1 -->
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
@@ -262,7 +263,7 @@
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <!-- DUPLIKAT dla płynnego scrollowania (potrzebne, aby animacja była ciągła) -->
+        <!-- Zestaw 2 (duplikaty) -->
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
         <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
@@ -288,7 +289,7 @@
     <div id="discountMessage" class="discount-msg"></div>
   </div>
 
-  <footer class="footer">© 2026 opszyszo · wszystkie prawa zastrzeżone</footer>
+  <footer class="footer">© 2026 OPservers · wszystkie prawa zastrzeżone</footer>
 </div>
 
 <script>
@@ -341,10 +342,10 @@
           'Boty, Role, Zabezpieczenia, Wprowadzenie',
           '✅ Emotki i naklejki',
           '🤖 Wszystkie ustawienia botów są już skonfigurowane',
+          '🔄 Comiesięczny backup serwera bez botów (PRO)',
           'Brak wymaganej roli (opcjonalnie reklama usługi)',
           'Własne życzenia',
-          'Stworzenie ikony i opisu <strong>(bez AI)</strong>',
-          '📅 Co miesięczny backup serwera (bez botów) — BETA'
+          'Stworzenie ikony i opisu <strong>(bez AI)</strong>'
         ]
       }
     ];
