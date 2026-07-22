@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Opszyszo · Serwery Discord</title>
+  <title>OPserwery· Serwery Discord</title>
   <style>
-    /* ── Reszta stylów identyczna jak w poprzedniej wersji (ciemny neon) ── */
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
@@ -19,6 +18,8 @@
       background-image: radial-gradient(circle at 20% 30%, #1a1030 0%, #0b0a0f 70%);
     }
     .container { max-width:1200px; width:100%; }
+
+    /* NAVBAR */
     .navbar {
       display: flex; justify-content: space-between; align-items: center;
       padding: 24px 0 16px;
@@ -45,6 +46,7 @@
     }
     .nav-links .btn-outline:hover { background:#7a4bff; color:#fff; box-shadow:0 0 28px rgba(122,75,255,0.5); }
 
+    /* HERO */
     .hero { text-align:center; padding:36px 0 28px; }
     .hero h1 {
       font-size:3.2rem; font-weight:800;
@@ -55,6 +57,94 @@
     .hero p { font-size:1.2rem; color:#b0aac0; margin-top:12px; max-width:620px; margin-inline:auto; font-weight:300; }
     .hero .highlight { color:#d4baff; font-weight:500; }
 
+    /* OPINIE – automatyczne przewijanie */
+    .opinions-section {
+      margin: 20px 0 40px;
+      padding: 10px 0;
+      border-top: 1px solid rgba(130,80,255,0.15);
+      border-bottom: 1px solid rgba(130,80,255,0.15);
+      overflow: hidden; /* ukrywa nadmiar */
+      position: relative;
+    }
+    .opinions-section h2 {
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: #b0aac0;
+      text-align: center;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+    .opinions-track {
+      display: flex;
+      gap: 24px;
+      width: max-content;
+      animation: scrollOpinions 30s linear infinite;
+    }
+    /* podwajamy zawartość, aby uzyskać płynne przewijanie bez przerwy */
+    .opinions-track-duplicate {
+      display: flex;
+      gap: 24px;
+    }
+
+    @keyframes scrollOpinions {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Kiedy użytkownik najedzie kursorem – zatrzymaj animację (opcjonalnie) */
+    .opinions-section:hover .opinions-track {
+      animation-play-state: paused;
+    }
+
+    .opinion-card {
+      flex: 0 0 260px;
+      background: rgba(18,16,30,0.6);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(130,80,255,0.15);
+      border-radius: 28px;
+      padding: 20px 18px;
+      transition: 0.25s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .opinion-card:hover {
+      border-color: #9a6aff;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(122,75,255,0.15);
+    }
+    .opinion-user {
+      font-weight: 600;
+      color: #c8b0f0;
+      font-size: 1rem;
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
+    }
+    .opinion-user::before {
+      content: "👤 ";
+      opacity: 0.6;
+    }
+    .opinion-text {
+      color: #b0aac0;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      font-style: italic;
+      min-height: 3.2em;
+    }
+    .opinion-text::before {
+      content: "“";
+      opacity: 0.3;
+      font-size: 1.6rem;
+      line-height: 0.8;
+      margin-right: 2px;
+    }
+    .opinion-text::after {
+      content: "”";
+      opacity: 0.3;
+      font-size: 1.6rem;
+      line-height: 0.8;
+      margin-left: 2px;
+    }
+
+    /* OFERTY */
     .offers { display:flex; flex-wrap:wrap; justify-content:center; gap:28px; margin:40px 0 36px; }
     .card {
       background:rgba(18,16,30,0.7); backdrop-filter:blur(6px);
@@ -129,19 +219,22 @@
     .discount-msg.error { color:#ff7a7a; }
 
     .footer { margin-top:40px; font-size:0.8rem; color:#4a4460; text-align:center; border-top:1px solid #1a1628; padding-top:28px; }
+
     @media (max-width:640px) {
       .hero h1 { font-size:2.2rem; }
       .card { flex:1 1 100%; max-width:400px; }
       .navbar { flex-direction:column; align-items:center; }
       .nav-links { gap:16px; flex-wrap:wrap; justify-content:center; }
       .discount-section { padding:18px 20px; }
+      .opinion-card { flex:0 0 200px; }
     }
   </style>
 </head>
 <body>
 <div class="container">
+  <!-- NAVBAR -->
   <nav class="navbar">
-    <div class="logo">opszyszo <span>· serwery</span></div>
+    <div class="logo">opserwery <span>· serwery</span></div>
     <div class="nav-links">
       <a href="#">Start</a>
       <a href="#" class="btn-outline">Oferta</a>
@@ -149,11 +242,47 @@
     </div>
   </nav>
 
+  <!-- HERO -->
   <section class="hero">
     <h1>ŚWIETNE SERWERY <br>JUŻ OD 0,00<span style="font-weight:300;">zł</span></h1>
     <p><span class="highlight">Profesjonalne serwery Discord</span> z pełnym wyposażeniem, botami, zabezpieczeniami i unikalnym stylem. Wybierz pakiet idealny dla siebie.</p>
   </section>
 
+  <!-- OPINIE – automatycznie przesuwane -->
+  <section class="opinions-section">
+    <h2>⭐ Co mówią nasi klienci</h2>
+    <div class="opinions-track">
+      <!-- Podwajamy zawartość, aby uzyskać płynny nieskończony scroll -->
+      <div class="opinions-track-duplicate">
+        <!-- 10 opinii – do zmiany w kodzie -->
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+      </div>
+      <!-- Kopia dla płynności -->
+      <div class="opinions-track-duplicate">
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFERTY -->
   <div class="offers" id="offersContainer"></div>
 
   <!-- KOD RABATOWY -->
@@ -164,12 +293,12 @@
     <div id="discountMessage" class="discount-msg"></div>
   </div>
 
-  <footer class="footer">© 2026 opszyszo · wszystkie prawa zastrzeżone</footer>
+  <footer class="footer">© 2026 opserwery · wszystkie prawa zastrzeżone</footer>
 </div>
 
 <script>
   (function() {
-    // ─── OFERTY ───
+    // OFERTY (bez zmian)
     const offersData = [
       {
         id: 'basic',
@@ -224,20 +353,16 @@
       }
     ];
 
-    // ─── KODY RABATOWE (aktywne / nieaktywne) ───
-    // Zmieniaj tutaj active: true/false oraz dodawaj nowe kody
     let discountCodes = [
       { code: 'SUMMER2026', discount: 50, active: true }
-      // możesz dopisać kolejne, np. { code: 'WINTER2026', discount: 30, active: false }
     ];
 
-    // ─── REFERENCJE ───
     const container = document.getElementById('offersContainer');
     const discountInput = document.getElementById('discountInput');
     const applyBtn = document.getElementById('applyDiscountBtn');
     const discountMsg = document.getElementById('discountMessage');
 
-    let activeDiscount = null; // aktualnie użyty kod
+    let activeDiscount = null;
 
     function formatPrice(val) {
       return val.toFixed(2).replace('.', ',') + ' zł';
