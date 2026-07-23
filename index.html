@@ -30,13 +30,15 @@
       gap:16px;
     }
     .logo {
-      font-size:1.6rem; font-weight:700;
-      background: linear-gradient(135deg,#b47aff,#6f3bff);
-      -webkit-background-clip:text; background-clip:text;
-      color:transparent;
-      text-shadow:0 0 20px rgba(111,59,255,0.3);
+      display: flex;
+      align-items: center;
+      font-size: 0; /* usuwa domyślny odstęp */
     }
-    .logo span { font-weight:300; color:#a0a0b0; background:none; -webkit-background-clip:unset; background-clip:unset; text-shadow:none; }
+    .logo img {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
     .nav-links { display:flex; gap:28px; align-items:center; }
     .nav-links a { color:#bbb; text-decoration:none; font-weight:500; transition:0.25s; }
     .nav-links a:hover { color:#c8a7ff; text-shadow:0 0 12px rgba(170,100,255,0.5); }
@@ -324,7 +326,9 @@
 <div class="container">
   <!-- NAVBAR -->
   <nav class="navbar">
-    <div class="logo">OPservers <span>· serwery</span></div>
+    <div class="logo">
+      <img src="logo.png" alt="OPservers" />
+    </div>
     <div class="nav-links">
       <a href="#">Start</a>
       <a href="#" class="btn-outline">Oferta</a>
