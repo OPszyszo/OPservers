@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Podsumowanie · Opszyszo</title>
+  <title>Podsumowanie · OPservers</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
@@ -58,23 +58,6 @@
     .detail .row:last-child { border-bottom: none; }
     .detail .label { color: #b0aac0; }
     .detail .value { font-weight: 600; color: #f0eaff; }
-
-    .features-list {
-      list-style: none;
-      text-align: left;
-      margin: 12px 0 20px;
-      padding: 0 8px;
-    }
-    .features-list li {
-      padding: 4px 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .features-list li::before {
-      content: "✦";
-      color: #7a4bff;
-    }
 
     .btn-buy {
       width: 100%;
@@ -146,10 +129,10 @@
 
 <div class="check-card" id="checkCard">
   <h2>🛒 Podsumowanie</h2>
-  <p class="sub">Wybrałeś pakiet:</p>
+  <p class="sub">Twój wybór:</p>
 
   <div id="offerDetails" class="detail">
-    <!-- wypełniane z JS -->
+    <!-- dane zostaną wypełnione z JS -->
   </div>
 
   <button id="buyBtn" class="btn-buy">Kup teraz</button>
@@ -157,7 +140,7 @@
   <div id="resultArea" class="result-box" style="display:none;">
     <div class="pv-label">__opservers__</div>
     <div class="code" id="generatedCode"></div>
-    <div class="info">Twój kod został wygenerowany, wyślij go na dc: __opservers__</div>
+    <div class="info">Twój kod został wygenerowany</div>
   </div>
 
   <a href="index.html" class="back-link">← Wróć do ofert</a>
@@ -165,72 +148,35 @@
 
 <script>
   (function() {
-    // ─── DANE OFERT ───
-    const offersData = [
-      {
-        id: 'basic',
-        name: 'Basic',
-        price: 0.00,
-        oldPrice: 0.99,
-        features: [
-          '5 Szablonów do wyboru',
-          'Wszystkie kategorie',
-          'Dostęp do serwera w 95%',
-          'Max czas oczekiwania: 1-2 Miesiące',
-          'Boty, Role, Wprowadzenie',
-          'Budowniczy serwa musi mieć rolę helper lub server builder'
-        ]
-      },
-      {
-        id: 'classic',
-        name: 'Classic',
-        price: 2.99,
-        oldPrice: 2.99,
-        features: [
-          '15 Szablonów',
-          'Wszystkie kategorie',
-          'Dostęp do serwera w 99%',
-          'Boty, Role, Zabezpieczenia, Wprowadzenie',
-          '✅ Emotki i naklejki',
-          '🤖 Wszystkie ustawienia botów są już skonfigurowane',
-          'Budowniczy serwa: helper / server builder',
-          'Opcjonalnie: reklama za stworzenie serwera',
-          'Stworzenie tylko opisu'
-        ]
-      },
-      {
-        id: 'pro',
-        name: 'Pro',
-        price: 4.99,
-        oldPrice: 4.99,
-        features: [
-          '30 Szablonów (+ będzie więcej)',
-          'Wszystkie kategorie',
-          'Dostęp do serwera w 100%',
-          'Boty, Role, Zabezpieczenia, Wprowadzenie',
-          '✅ Emotki i naklejki',
-          '🤖 Wszystkie ustawienia botów są już skonfigurowane',
-          'Brak wymaganej roli (opcjonalnie reklama usługi)',
-          'Własne życzenia',
-          'Stworzenie ikony i opisu (bez AI)'
-        ]
+    // ─── ODCZYT DANYCH Z LOCALSTORAGE ───
+    let selectedData = null;
+    try {
+      const raw = localStorage.getItem('selectedOffer');
+      if (raw) {
+        selectedData = JSON.parse(raw);
       }
-    ];
+    } catch(e) {}
 
-    const params = new URLSearchParams(window.location.search);
-    const offerId = params.get('offer') || 'basic';
-    const offer = offersData.find(o => o.id === offerId) || offersData[0];
+    // Jeśli brak danych, przekieruj do strony głównej
+    if (!selectedData) {
+      window.location.href = 'index.html';
+      return;
+    }
 
+    // ─── WYŚWIETLENIE SZCZEGÓŁÓW ───
     const detailsDiv = document.getElementById('offerDetails');
-    const featuresHtml = offer.features.map(f => `<li>${f}</li>`).join('');
-    const priceStr = offer.price.toFixed(2).replace('.', ',') + ' zł';
+    const priceStr = selectedData.finalPrice.toFixed(2).replace('.', ',') + ' ' + (selectedData.currency || 'zł');
+    let discountInfo = '';
+    if (selectedData.discountCode) {
+      discountInfo = `<div class="row"><span class="label">Kod rabatowy</span><span class="value">${selectedData.discountCode} (-${selectedData.discountPercent}%)</span></div>`;
+    }
     detailsDiv.innerHTML = `
-      <div class="row"><span class="label">Pakiet</span><span class="value">${offer.name}</span></div>
-      <div class="row"><span class="label">Cena</span><span class="value">${priceStr}</span></div>
-      <div style="margin-top: 12px;"><strong>Co zawiera:</strong></div>
-      <ul class="features-list">${featuresHtml}</ul>
+      <div class="row"><span class="label">Pakiet</span><span class="value">${selectedData.offerName}</span></div>
+      <div class="row"><span class="label">Cena końcowa</span><span class="value">${priceStr}</span></div>
+      ${discountInfo}
     `;
 
+    // ─── OBSŁUGA ZAKUPU ───
     const buyBtn = document.getElementById('buyBtn');
     const resultArea = document.getElementById('resultArea');
     const generatedCodeSpan = document.getElementById('generatedCode');
@@ -251,25 +197,27 @@
       generatedCodeSpan.textContent = code;
 
       // Wyślij e-mail przez FormSubmit (w tle)
-      sendEmail(code, offer);
+      sendEmail(code, selectedData);
 
       buyBtn.textContent = '✅ Zakupiono';
       // pozostaje disabled, aby nie wysyłać ponownie
     });
 
-    // ─── WYSYŁKA PRZEZ FORMSUBMIT (bez rejestracji) ───
-    function sendEmail(code, offer) {
+    // ─── WYSYŁKA PRZEZ FORMSUBMIT ───
+    function sendEmail(code, data) {
       const email = 'nakl3jka@outlook.com';
-      const subject = `Nowe zamówienie - ${offer.name}`;
-      const message = `
-        Wybrano pakiet: ${offer.name}
-        Cena: ${offer.price.toFixed(2)} zł
+      const subject = `Nowe zamówienie - ${data.offerName}`;
+      const priceFormatted = data.finalPrice.toFixed(2).replace('.', ',') + ' ' + (data.currency || 'zł');
+      let message = `
+        Wybrano pakiet: ${data.offerName}
+        Cena końcowa: ${priceFormatted}
         Wygenerowany kod: ${code}
-        ---
-        Opszyszo
       `;
+      if (data.discountCode) {
+        message += `\nUżyty kod rabatowy: ${data.discountCode} (${data.discountPercent}% zniżki)`;
+      }
+      message += `\n---\nOPservers`;
 
-      // FormSubmit akceptuje POST na https://formsubmit.co/ajax/email
       fetch('https://formsubmit.co/ajax/' + email, {
         method: 'POST',
         headers: {
@@ -287,7 +235,6 @@
       })
       .catch(error => {
         console.error('Błąd przy wysyłce e-mail:', error);
-        // Błąd nie jest pokazywany użytkownikowi – zgodnie z wymaganiem
       });
     }
 
