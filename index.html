@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>OPservers · Serwery Discord</title>
   <style>
-    /* ─── OGÓLNE ─── */
+    /* ... reszta stylów bez zmian (przepisuję całość) ... */
+    /* (wklejam cały poprzedni styl, bo jest długi) */
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
@@ -20,7 +21,6 @@
     }
     .container { max-width:1200px; width:100%; }
 
-    /* ─── NAVBAR ─── */
     .navbar {
       display: flex; justify-content: space-between; align-items: center;
       padding: 24px 0 16px;
@@ -47,7 +47,6 @@
     }
     .nav-links .btn-outline:hover { background:#7a4bff; color:#fff; box-shadow:0 0 28px rgba(122,75,255,0.5); }
 
-    /* ─── HERO ─── */
     .hero { text-align:center; padding:36px 0 28px; }
     .hero h1 {
       font-size:3.2rem; font-weight:800;
@@ -58,7 +57,6 @@
     .hero p { font-size:1.2rem; color:#b0aac0; margin-top:12px; max-width:620px; margin-inline:auto; font-weight:300; }
     .hero .highlight { color:#d4baff; font-weight:500; }
 
-    /* ─── OPINIE – automatyczne przewijanie ─── */
     .opinions-section {
       margin: 20px 0 40px;
       padding: 10px 0;
@@ -151,7 +149,6 @@
       margin-left: 2px;
     }
 
-    /* ─── OFERTY ─── */
     .offers { display:flex; flex-wrap:wrap; justify-content:center; gap:28px; margin:40px 0 36px; }
     .card {
       background:rgba(18,16,30,0.7); backdrop-filter:blur(6px);
@@ -199,7 +196,6 @@
     }
     .btn-primary:hover { transform:scale(1.02); box-shadow:0 6px 36px rgba(111,59,255,0.5); }
 
-    /* ─── KOD RABATOWY ─── */
     .discount-section {
       background:rgba(18,16,30,0.5); backdrop-filter:blur(4px);
       border-radius:60px; padding:20px 30px;
@@ -239,7 +235,6 @@
 </head>
 <body>
 <div class="container">
-  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="logo">OPservers <span>· serwery</span></div>
     <div class="nav-links">
@@ -249,18 +244,16 @@
     </div>
   </nav>
 
-  <!-- HERO -->
   <section class="hero">
     <h1>ŚWIETNE SERWERY <br>JUŻ OD 0,00<span style="font-weight:300;">zł</span></h1>
     <p><span class="highlight">Profesjonalne serwery Discord</span> z pełnym wyposażeniem, botami, zabezpieczeniami i unikalnym stylem. Wybierz pakiet idealny dla siebie.</p>
   </section>
 
-  <!-- OPINIE – automatyczne przewijanie (duplikaty dla płynności) -->
   <section class="opinions-section">
     <h2>⭐ Co mówią nasi klienci</h2>
     <div class="opinions-track-wrapper">
       <div class="opinions-track" id="opinionsTrack">
-        <!-- Zestaw 1 – każda opinia ma atrybut data-rating (1-5) oraz tekst i nazwę użytkownika -->
+        <!-- Zestaw 1 -->
         <div class="opinion-card" data-rating="5">
           <div class="opinion-user">YellowSpeakerSFM</div>
           <div class="opinion-stars"></div>
@@ -311,7 +304,7 @@
           <div class="opinion-stars"></div>
           <div class="opinion-text">PUSTO</div>
         </div>
-        <!-- Zestaw 2 (duplikaty) – te same dane, żeby animacja była ciągła -->
+        <!-- Zestaw 2 (duplikaty) -->
         <div class="opinion-card" data-rating="5">
           <div class="opinion-user">PUSTO</div>
           <div class="opinion-stars"></div>
@@ -366,10 +359,8 @@
     </div>
   </section>
 
-  <!-- OFERTY (generowane przez JS) -->
   <div class="offers" id="offersContainer"></div>
 
-  <!-- KOD RABATOWY -->
   <div class="discount-section">
     <label><span>🎟️</span> Kod rabatowy</label>
     <input type="text" id="discountInput" placeholder="wpisz kod" maxlength="30" autocomplete="off">
@@ -456,7 +447,7 @@
       }
     ];
 
-    // ─── KODY RABATOWE (aktywne/nieaktywne) ───
+    // ─── KODY RABATOWE ───
     let discountCodes = [
       { code: 'SUMMER2026', discount: 50, active: true }
     ];
@@ -472,19 +463,22 @@
       return val.toFixed(2).replace('.', ',') + ' zł';
     }
 
+    // Funkcja do obliczania ceny końcowej dla oferty z uwzględnieniem aktywnego kodu
+    function getFinalPrice(offer) {
+      let price = offer.price;
+      if (activeDiscount && activeDiscount.active && price > 0) {
+        price = Math.round(price * (1 - activeDiscount.discount / 100) * 100) / 100;
+      }
+      return price;
+    }
+
     function renderOffers() {
       let html = '';
       offersData.forEach(offer => {
         const isFree = offer.price === 0 && offer.oldPrice > 0;
-        let currentPrice = offer.price;
-        let oldPrice = offer.oldPrice;
-        let discountPercent = 0;
-
-        if (activeDiscount && activeDiscount.active && currentPrice > 0) {
-          const disc = activeDiscount.discount;
-          currentPrice = Math.round(currentPrice * (1 - disc / 100) * 100) / 100;
-          discountPercent = disc;
-        }
+        const currentPrice = getFinalPrice(offer);
+        const oldPrice = offer.oldPrice;
+        const discountPercent = (activeDiscount && activeDiscount.active && offer.price > 0) ? activeDiscount.discount : 0;
 
         const showOldPrice = (oldPrice > 0 && (oldPrice !== currentPrice || isFree));
 
@@ -514,11 +508,36 @@
               ${discountTag}
             </div>
             <ul class="features">${featuresHtml}</ul>
-            <a href="check.html?offer=${offer.id}" class="btn-primary">Wybierz ${offer.name}</a>
+            <button class="btn-primary select-offer" data-offer="${offer.id}">Wybierz ${offer.name}</button>
           </div>
         `;
       });
       container.innerHTML = html;
+
+      // Dodajemy nasłuch dla przycisków wyboru oferty
+      document.querySelectorAll('.select-offer').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const offerId = this.getAttribute('data-offer');
+          const offer = offersData.find(o => o.id === offerId);
+          if (!offer) return;
+
+          // Oblicz cenę końcową
+          const finalPrice = getFinalPrice(offer);
+          // Zapisz w localStorage dane o wybranej ofercie i kodzie
+          const data = {
+            offerId: offer.id,
+            offerName: offer.name,
+            finalPrice: finalPrice,
+            currency: 'zł',
+            discountCode: activeDiscount ? activeDiscount.code : null,
+            discountPercent: activeDiscount ? activeDiscount.discount : 0
+          };
+          localStorage.setItem('selectedOffer', JSON.stringify(data));
+
+          // Przekieruj do check.html
+          window.location.href = 'check.html';
+        });
+      });
     }
 
     function applyDiscount(code) {
