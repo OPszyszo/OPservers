@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>OPservers · Serwery Discord</title>
   <style>
-    /* ... reszta stylów bez zmian (przepisuję całość) ... */
-    /* (wklejam cały poprzedni styl, bo jest długi) */
+    /* ─── OGÓLNE ─── */
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
@@ -21,6 +20,7 @@
     }
     .container { max-width:1200px; width:100%; }
 
+    /* ─── NAVBAR ─── */
     .navbar {
       display: flex; justify-content: space-between; align-items: center;
       padding: 24px 0 16px;
@@ -47,6 +47,7 @@
     }
     .nav-links .btn-outline:hover { background:#7a4bff; color:#fff; box-shadow:0 0 28px rgba(122,75,255,0.5); }
 
+    /* ─── HERO ─── */
     .hero { text-align:center; padding:36px 0 28px; }
     .hero h1 {
       font-size:3.2rem; font-weight:800;
@@ -57,6 +58,7 @@
     .hero p { font-size:1.2rem; color:#b0aac0; margin-top:12px; max-width:620px; margin-inline:auto; font-weight:300; }
     .hero .highlight { color:#d4baff; font-weight:500; }
 
+    /* ─── OPINIE – automatyczne przewijanie ─── */
     .opinions-section {
       margin: 20px 0 40px;
       padding: 10px 0;
@@ -149,6 +151,7 @@
       margin-left: 2px;
     }
 
+    /* ─── OFERTY ─── */
     .offers { display:flex; flex-wrap:wrap; justify-content:center; gap:28px; margin:40px 0 36px; }
     .card {
       background:rgba(18,16,30,0.7); backdrop-filter:blur(6px);
@@ -196,6 +199,88 @@
     }
     .btn-primary:hover { transform:scale(1.02); box-shadow:0 6px 36px rgba(111,59,255,0.5); }
 
+    /* ─── GALERIA (karuzela) ─── */
+    .gallery-section {
+      margin: 40px 0;
+      padding: 10px 0;
+      border-top: 1px solid rgba(130,80,255,0.15);
+      border-bottom: 1px solid rgba(130,80,255,0.15);
+    }
+    .gallery-section h2 {
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: #b0aac0;
+      text-align: center;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+    .gallery-container {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid rgba(130,80,255,0.2);
+      background: rgba(18,16,30,0.5);
+    }
+    .gallery-slides {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .gallery-slide {
+      min-width: 100%;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #12101e;
+    }
+    .gallery-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .gallery-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      border: none;
+      font-size: 2rem;
+      padding: 10px 18px;
+      cursor: pointer;
+      border-radius: 60px;
+      backdrop-filter: blur(4px);
+      transition: 0.25s;
+      z-index: 10;
+    }
+    .gallery-btn:hover {
+      background: rgba(122,75,255,0.6);
+    }
+    .gallery-btn.prev { left: 12px; }
+    .gallery-btn.next { right: 12px; }
+    .gallery-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 0 8px;
+    }
+    .gallery-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #3a2e5a;
+      border: none;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+    .gallery-dot.active {
+      background: #7a4bff;
+      box-shadow: 0 0 16px rgba(122,75,255,0.5);
+    }
+
+    /* ─── KOD RABATOWY ─── */
     .discount-section {
       background:rgba(18,16,30,0.5); backdrop-filter:blur(4px);
       border-radius:60px; padding:20px 30px;
@@ -230,11 +315,14 @@
       .nav-links { gap:16px; flex-wrap:wrap; justify-content:center; }
       .discount-section { padding:18px 20px; }
       .opinion-card { flex:0 0 200px; }
+      .gallery-container { max-width:100%; }
+      .gallery-btn { font-size:1.4rem; padding:6px 12px; }
     }
   </style>
 </head>
 <body>
 <div class="container">
+  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="logo">OPservers <span>· serwery</span></div>
     <div class="nav-links">
@@ -244,11 +332,13 @@
     </div>
   </nav>
 
+  <!-- HERO -->
   <section class="hero">
     <h1>ŚWIETNE SERWERY <br>JUŻ OD 0,00<span style="font-weight:300;">zł</span></h1>
     <p><span class="highlight">Profesjonalne serwery Discord</span> z pełnym wyposażeniem, botami, zabezpieczeniami i unikalnym stylem. Wybierz pakiet idealny dla siebie.</p>
   </section>
 
+  <!-- OPINIE -->
   <section class="opinions-section">
     <h2>⭐ Co mówią nasi klienci</h2>
     <div class="opinions-track-wrapper">
@@ -359,8 +449,28 @@
     </div>
   </section>
 
+  <!-- OFERTY (generowane przez JS) -->
   <div class="offers" id="offersContainer"></div>
 
+  <!-- GALERIA (karuzela) -->
+  <section class="gallery-section">
+    <h2>📸 Zobacz nasze realizacje</h2>
+    <div class="gallery-container">
+      <div class="gallery-slides" id="gallerySlides">
+        <!-- Tutaj wstaw swoje zdjęcia z imgur – zmień src na swoje linki -->
+        <div class="gallery-slide"><img src="https://i.imgur.com/placeholder1.jpg" alt="Zdjęcie 1"></div>
+        <div class="gallery-slide"><img src="https://i.imgur.com/placeholder2.jpg" alt="Zdjęcie 2"></div>
+        <div class="gallery-slide"><img src="https://i.imgur.com/placeholder3.jpg" alt="Zdjęcie 3"></div>
+        <div class="gallery-slide"><img src="https://i.imgur.com/placeholder4.jpg" alt="Zdjęcie 4"></div>
+        <div class="gallery-slide"><img src="https://i.imgur.com/placeholder5.jpg" alt="Zdjęcie 5"></div>
+      </div>
+      <button class="gallery-btn prev" id="galleryPrev">‹</button>
+      <button class="gallery-btn next" id="galleryNext">›</button>
+      <div class="gallery-dots" id="galleryDots"></div>
+    </div>
+  </section>
+
+  <!-- KOD RABATOWY -->
   <div class="discount-section">
     <label><span>🎟️</span> Kod rabatowy</label>
     <input type="text" id="discountInput" placeholder="wpisz kod" maxlength="30" autocomplete="off">
@@ -390,6 +500,56 @@
         starsContainer.innerHTML = starsHtml;
       });
     }
+
+    // ─── GALERIA (karuzela) ───
+    (function initGallery() {
+      const slides = document.getElementById('gallerySlides');
+      const prevBtn = document.getElementById('galleryPrev');
+      const nextBtn = document.getElementById('galleryNext');
+      const dotsContainer = document.getElementById('galleryDots');
+      const totalSlides = slides.children.length;
+      let currentIndex = 0;
+      let autoPlayInterval;
+
+      // Tworzymy kropki
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('button');
+        dot.classList.add('gallery-dot');
+        if (i === 0) dot.classList.add('active');
+        dot.dataset.index = i;
+        dot.addEventListener('click', () => goToSlide(i));
+        dotsContainer.appendChild(dot);
+      }
+
+      function goToSlide(index) {
+        if (index < 0) index = totalSlides - 1;
+        if (index >= totalSlides) index = 0;
+        currentIndex = index;
+        slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+        document.querySelectorAll('.gallery-dot').forEach((dot, i) => {
+          dot.classList.toggle('active', i === currentIndex);
+        });
+        resetAutoPlay();
+      }
+
+      function nextSlide() { goToSlide(currentIndex + 1); }
+      function prevSlide() { goToSlide(currentIndex - 1); }
+
+      function resetAutoPlay() {
+        clearInterval(autoPlayInterval);
+        autoPlayInterval = setInterval(nextSlide, 5000);
+      }
+
+      prevBtn.addEventListener('click', prevSlide);
+      nextBtn.addEventListener('click', nextSlide);
+
+      // Pauza na hover
+      const container = document.querySelector('.gallery-container');
+      container.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+      container.addEventListener('mouseleave', resetAutoPlay);
+
+      resetAutoPlay();
+    })();
 
     // ─── OFERTY ───
     const offersData = [
