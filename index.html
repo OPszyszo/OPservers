@@ -92,7 +92,7 @@
     }
     @keyframes scrollOpinions {
       0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); } /* przesuwamy o połowę szerokości, bo mamy duplikaty */
+      100% { transform: translateX(-50%); }
     }
     .opinion-card {
       flex: 0 0 260px;
@@ -113,12 +113,21 @@
       font-weight: 600;
       color: #c8b0f0;
       font-size: 1rem;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
       letter-spacing: 0.3px;
     }
     .opinion-user::before {
       content: "👤 ";
       opacity: 0.6;
+    }
+    .opinion-stars {
+      color: #f5c542;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      margin: 4px 0 8px;
+    }
+    .opinion-stars .star-empty {
+      color: #4a4460;
     }
     .opinion-text {
       color: #b0aac0;
@@ -251,29 +260,108 @@
     <h2>⭐ Co mówią nasi klienci</h2>
     <div class="opinions-track-wrapper">
       <div class="opinions-track" id="opinionsTrack">
-        <!-- Karty opinii – każda powtórzona dwukrotnie, aby uzyskać ciągły efekt -->
-        <!-- Zestaw 1 -->
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <!-- Zestaw 2 (duplikaty) -->
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
-        <div class="opinion-card"><div class="opinion-user">PUSTO</div><div class="opinion-text">PUSTO</div></div>
+        <!-- Zestaw 1 – każda opinia ma atrybut data-rating (1-5) oraz tekst i nazwę użytkownika -->
+        <div class="opinion-card" data-rating="5">
+          <div class="opinion-user">YellowSpeakerSFM</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">ja nie ogarniam discord więc przydało się to. Pozatym za darmo to dobra cena xd</div>
+        </div>
+        <div class="opinion-card" data-rating="4">
+          <div class="opinion-user">oliluniek</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">lubie schabowe</div>
+        </div>
+        <div class="opinion-card" data-rating="3">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="5">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="2">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="4">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="5">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="3">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="1">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="4">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <!-- Zestaw 2 (duplikaty) – te same dane, żeby animacja była ciągła -->
+        <div class="opinion-card" data-rating="5">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="4">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="3">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="5">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="2">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="4">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="5">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="3">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="1">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
+        <div class="opinion-card" data-rating="4">
+          <div class="opinion-user">PUSTO</div>
+          <div class="opinion-stars"></div>
+          <div class="opinion-text">PUSTO</div>
+        </div>
       </div>
     </div>
   </section>
@@ -294,6 +382,24 @@
 
 <script>
   (function() {
+    // ─── GENEROWANIE GWIAZDEK DLA OPINII ───
+    function renderStars() {
+      document.querySelectorAll('.opinion-card').forEach(card => {
+        const rating = parseInt(card.getAttribute('data-rating'), 10) || 0;
+        const starsContainer = card.querySelector('.opinion-stars');
+        if (!starsContainer) return;
+        let starsHtml = '';
+        for (let i = 1; i <= 5; i++) {
+          if (i <= rating) {
+            starsHtml += '<span class="star-full">★</span>';
+          } else {
+            starsHtml += '<span class="star-empty">★</span>';
+          }
+        }
+        starsContainer.innerHTML = starsHtml;
+      });
+    }
+
     // ─── OFERTY ───
     const offersData = [
       {
@@ -353,7 +459,6 @@
     // ─── KODY RABATOWE (aktywne/nieaktywne) ───
     let discountCodes = [
       { code: 'SUMMER2026', discount: 50, active: true }
-      // dopisz kolejne kody tutaj, ustawiając active: true/false
     ];
 
     const container = document.getElementById('offersContainer');
@@ -449,6 +554,8 @@
     applyBtn.addEventListener('click', () => applyDiscount(discountInput.value));
     discountInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') applyBtn.click(); });
 
+    // Inicjalizacja
+    renderStars();
     renderOffers();
   })();
 </script>
